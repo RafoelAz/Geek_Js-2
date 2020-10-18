@@ -47,16 +47,49 @@ class GoodsList {
     });
     document.querySelector('.goods-list').innerHTML = listHtml;
   }
-  sumGoodsPrice(){
+ 
+}
+
+class BasketItem{
+	  constructor(title, price) {
+    this.title = title;
+    this.price = price;
+  }
+  render() {
+	return `<div class="basket-item">
+	<h3>${this.title}</h3>
+	<div class="basket-img"></div>
+	<p>${this.price}<button>+</button><button>-</button></p>
+	</div>`;
+  }
+
+}
+
+class GoodsList {
+  constructor() {
+    this.goods = [];
+  }
+addBasketItem(basketItem){
+	this.goods.push(basketItem);
+}
+
+ sumBasketPrice(){
 	  let sum = 0;
 	  this.goods.forEach(({price})=>{
 		  sum+=price
 	  })
-	  console.log(`Сумма: ${sum}`)
+	  document.querySelector('.basket-sum').innerText = `Сумма: ${sum}`;
+  }
+
+  render() {
+    let listHtml = '';
+    this.goods.forEach(({title,price}) => {
+      const basketItem = new BasketItem(title,price);
+      listHtml += basketItem.render();
+    });
+    document.querySelector('.basket-list').innerHTML = listHtml;
   }
 }
-
 const list = new GoodsList();
 list.fetchGoods();
 list.render();
-list.sumGoodsPrice()
